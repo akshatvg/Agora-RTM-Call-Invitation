@@ -12,7 +12,6 @@ export default class RTCClient {
     this._client = null
     this._joined = false
     this._localStream = null
-    // this._enableBeauty = false;
     this._params = {}
     this._uid = 0
     this._eventBus = new EventEmitter()
@@ -90,20 +89,10 @@ export default class RTCClient {
           if (data.muteAudio === false) {
             this._localStream.muteAudio()
           }
-          // if (data.beauty === true) {
-          //   this._localStream.setBeautyEffectOptions(true, {
-          //     lighteningContrastLevel: 1,
-          //     lighteningLevel: 0.7,
-          //     smoothnessLevel: 0.5,
-          //     rednessLevel: 0.1
-          //   })
-          //   this._enableBeauty = true;
-          // }
           resolve()
         },
         (err) => {
           reject(err)
-          // Toast.error("stream init failed, please open console see more detail");
           console.error('init local stream failed ', err)
         }
       )
@@ -183,7 +172,6 @@ export default class RTCClient {
         },
         (err) => {
           reject(err)
-          // Toast.error("stream init failed, please open console see more detail");
           console.error('init local stream failed ', err)
         }
       )
@@ -221,18 +209,7 @@ export default class RTCClient {
   join (data) {
     this._joined = 'pending'
     return new Promise((resolve, reject) => {
-      /**
-       * A class defining the properties of the config parameter in the createClient method.
-       * Note:
-       *    Ensure that you do not leave mode and codec as empty.
-       *    Ensure that you set these properties before calling Client.join.
-       *  You could find more detail here. https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.clientconfig.html
-       **/
-
       this._params = data
-
-      // handle AgoraRTC client event
-      // this.handleEvents();
 
       // init client
       this._client.init(
@@ -244,7 +221,6 @@ export default class RTCClient {
             data.uid ? +data.uid : null,
             (uid) => {
               this._uid = uid
-              // Toast.notice("join channel: " + data.channel + " success, uid: " + uid);
               console.log(
                 'join channel: ' + data.channel + ' success, uid: ' + uid
               )
@@ -311,9 +287,6 @@ export default class RTCClient {
         () => {
           this._joined = false
           this.destroy()
-          // if (this._localStream && this._enableBeauty) {
-          //   this._localStream.setBeautyEffectOptions(false);
-          // }
           resolve()
         },
         (err) => {

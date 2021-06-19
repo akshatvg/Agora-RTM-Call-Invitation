@@ -18,12 +18,6 @@ export default function useStream (client) {
     [stateCtx, currentStream]
   )
 
-  // const streamList = stateCtx.streams.filter((it) => it.getId() !== currentStream.getId());
-
-  // const [streamList, localStream, currentStream] = useMemo(() => {
-  //   return [stateCtx.streams, stateCtx.localStream, stateCtx.currentStream];
-  // }, [stateCtx]);
-
   useEffect(() => {
     const addRemoteStream = (evt) => {
       const { stream } = evt
@@ -33,20 +27,12 @@ export default function useStream (client) {
         )
       })
     }
-    // const canceledScreenSharing = () => {
-    //   if (stateCtx.localStream) {
-    //     stateCtx.localStream.close();
-    //   }
-    //   stateCtx.toastInfo('Screen Sharing Stopped');
-    // }
     if (client && client._subscribed === false) {
-      // client.on("stopScreenSharing", canceledScreenSharing);
       client.on('connection-state-change', mutationCtx.connectionStateChanged)
       client.on('localStream-added', mutationCtx.addLocal)
       client.on('stream-published', mutationCtx.addStream)
       client.on('stream-added', addRemoteStream)
       client.on('stream-removed', mutationCtx.removeStream)
-      // client.on("stream-subscribed", mutationCtx.addStream);
       client.on('peer-leave', mutationCtx.removeStreamById)
       client.on('stream-subscribed', (evt) => {
         client.setStreamFallbackOption(evt.stream, 2)
